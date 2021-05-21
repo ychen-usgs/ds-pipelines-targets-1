@@ -9,9 +9,13 @@ project_output_dir <- 'my_dir'
 
 dir.create(project_output_dir)
 
+
+# Get the data from ScienceBase
 mendota_file <- file.path(project_output_dir, 'model_RMSEs.csv')
 item_file_download('5d925066e4b0c4f70d0d0599', names = 'me_RMSE.csv', destinations = mendota_file, overwrite_file = TRUE)
 
+
+# Prepare the data for plotting
 eval_data <- readr::read_csv(mendota_file, col_types = 'iccd') %>%
   filter(str_detect(exper_id, 'similar_[0-9]+')) %>%
   mutate(col = case_when(
@@ -25,7 +29,7 @@ eval_data <- readr::read_csv(mendota_file, col_types = 'iccd') %>%
   ), n_prof = as.numeric(str_extract(exper_id, '[0-9]+')))
 
 
-
+# Create a plot
 png(file = file.path(project_output_dir, 'figure_1.png'), width = 8, height = 10, res = 200, units = 'in')
 par(omi = c(0,0,0.05,0.05), mai = c(1,1,0,0), las = 1, mgp = c(2,.5,0), cex = 1.5)
 
@@ -40,7 +44,6 @@ axis(2, at = seq(0,10), las = 1, tck = -0.01)
 # slight horizontal offsets so the markers don't overlap:
 offsets <- data.frame(pgdl = c(0.15, 0.5, 3, 7, 20, 30)) %>%
   mutate(dl = -pgdl, pb = 0, n_prof = n_profs)
-
 
 for (mod in c('pb','dl','pgdl')){
   mod_data <- filter(eval_data, model_type == mod)
@@ -69,9 +72,12 @@ text(2.3, 1.1, 'Process-Based', pos = 4, cex = 1.1)
 
 dev.off()
 
+
+# Save the processed data
 readr::write_csv(eval_data, path = file.path(project_output_dir, 'model_summary_results.csv'))
 
 
+# Save the model diagnostics
 render_data <- list(pgdl_980mean = filter(eval_data, model_type == 'pgdl', exper_id == "similar_980") %>% pull(rmse) %>% mean %>% round(2),
                     dl_980mean = filter(eval_data, model_type == 'dl', exper_id == "similar_980") %>% pull(rmse) %>% mean %>% round(2),
                     pb_980mean = filter(eval_data, model_type == 'pb', exper_id == "similar_980") %>% pull(rmse) %>% mean %>% round(2),
@@ -88,7 +94,3 @@ template_1 <- 'resulted in mean RMSEs (means calculated as average of RMSEs from
   The PGDL prediction accuracy was more robust compared to PB when only two profiles were provided for training ({{pgdl_2mean}} and {{pb_2mean}}°C, respectively). '
 
 whisker.render(template_1 %>% str_remove_all('\n') %>% str_replace_all('  ', ' '), render_data ) %>% cat(file = file.path(project_output_dir, 'model_diagnostic_text.txt'))
-
-
-
-
