@@ -1,9 +1,10 @@
 
 library(readr)
 
-render_func <- function (data,out_dir) {
+render_func <- function (data,out_path) {
   
-  readr::write_csv(data, file = file.path(out_dir, 'model_summary_results.csv'))
+  readr::write_csv(data, file = file.path(out_path))
   
+  return(out_path)
 }
 

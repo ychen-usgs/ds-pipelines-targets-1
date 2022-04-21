@@ -12,31 +12,31 @@ source("2_process/src/diag_func.R")
 list(
   # Get the data from ScienceBase
   tar_target(
-    mendota_file,
-    fetch_data(out_filepath = "1_fetch/out/model_RMSEs.csv"),
+    model_RMSEs_csv,
+    fetch_data(download_path = "1_fetch/out/model_RMSEs.csv"),
     format = "file"
   ), 
   # Prepare the data for plotting
   tar_target(
     eval_data,
-    clean_func(in_filepath = mendota_file)
+    clean_func(in_filepath = model_RMSEs_csv)
   ),
   # Create a plot
   tar_target(
     figure_1_png,
-    make_plot(out_filepath = "figure_1.png", data = eval_data), 
+    plot_func(out_file_path = "3_visualize/out/figure_1.png", data = eval_data), 
     format = "file"
   ),
   # Save the processed data
   tar_target(
     model_summary_results_csv,
-    write_csv(eval_data, file = "model_summary_results.csv"), 
+    render_func(data = eval_data, out_path = "2_process/out/model_summary_results.csv"), 
     format = "file"
   ),
   # Save the model diagnostics
   tar_target(
     model_diagnostic_text_txt,
-    generate_model_diagnostics(out_filepath = "model_diagnostic_text.txt", data = eval_data), 
+    diag_func(data = eval_data, outpath = "2_process/out/model_diagnostic_text.txt"), 
     format = "file"
   )
 )
