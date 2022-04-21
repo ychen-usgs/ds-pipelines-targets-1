@@ -1,4 +1,6 @@
 
+library(dplyr)
+
 plot_func <- function (data,out_dir) {
   
   png(file = file.path(out_dir, 'figure_1.png'), width = 8, height = 10, res = 200, units = 'in')
