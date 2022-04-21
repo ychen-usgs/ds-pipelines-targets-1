@@ -1,0 +1,42 @@
+
+library(targets)
+
+source("1_fetch/src/fetch_func.R")
+source("2_process/src/clean_func.R")
+source("3_visualize/src/ploting_func.R")
+source("2_process/src/render_func.R")
+source("2_process/src/diag_func.R")
+
+#tar_option_set(packages = c("tidyverse", "sbtools", "whisker"))
+
+list(
+  # Get the data from ScienceBase
+  tar_target(
+    mendota_file,
+    fetch_data(out_filepath = "1_fetch/out/model_RMSEs.csv"),
+    format = "file"
+  ), 
+  # Prepare the data for plotting
+  tar_target(
+    eval_data,
+    clean_func(in_filepath = mendota_file)
+  ),
+  # Create a plot
+  tar_target(
+    figure_1_png,
+    make_plot(out_filepath = "figure_1.png", data = eval_data), 
+    format = "file"
+  ),
+  # Save the processed data
+  tar_target(
+    model_summary_results_csv,
+    write_csv(eval_data, file = "model_summary_results.csv"), 
+    format = "file"
+  ),
+  # Save the model diagnostics
+  tar_target(
+    model_diagnostic_text_txt,
+    generate_model_diagnostics(out_filepath = "model_diagnostic_text.txt", data = eval_data), 
+    format = "file"
+  )
+)
