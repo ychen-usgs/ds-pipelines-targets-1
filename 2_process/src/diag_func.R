@@ -1,9 +1,9 @@
 
+library(dplyr)
+library(stringr)
+library(whisker)
+
 diag_func <- function (data,out_dir) {
-  
-  library(dplyr)
-  library(stringr)
-  library(whisker)
   
   render_data <- list(pgdl_980mean = filter(data, model_type == 'pgdl', exper_id == "similar_980") %>% pull(rmse) %>% mean %>% round(2),
                       dl_980mean = filter(data, model_type == 'dl', exper_id == "similar_980") %>% pull(rmse) %>% mean %>% round(2),

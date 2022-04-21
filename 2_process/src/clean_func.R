@@ -1,17 +1,12 @@
 
-fetch_data <- function (download_dir) {
-  
-  library(dplyr)
-  library(readr)
-  library(stringr)
-  library(sbtools)
-  
-  # Get the data from ScienceBase
-  mendota_file <- file.path(download_dir, 'model_RMSEs.csv')
-  item_file_download('5d925066e4b0c4f70d0d0599', names = 'me_RMSE.csv', destinations = mendota_file, overwrite_file = TRUE)
+library(dplyr)
+library(readr)
+library(stringr)
+
+clean_func <- function (file) {
   
   # Prepare the data for plotting
-  eval_data <- readr::read_csv(mendota_file, col_types = 'iccd') %>%
+  eval_data <- readr::read_csv(file, col_types = 'iccd') %>%
     filter(str_detect(exper_id, 'similar_[0-9]+')) %>%
     mutate(col = case_when(
       model_type == 'pb' ~ '#1b9e77',
