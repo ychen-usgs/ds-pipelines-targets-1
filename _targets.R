@@ -7,7 +7,7 @@ source("3_visualize/src/ploting_func.R")
 source("2_process/src/render_func.R")
 source("2_process/src/diag_func.R")
 
-#tar_option_set(packages = c("tidyverse", "sbtools", "whisker"))
+tar_option_set(packages = c("tidyverse", "sbtools", "whisker"))
 
 list(
   # Get the data from ScienceBase
@@ -40,3 +40,5 @@ list(
     format = "file"
   )
 )
+
+targets::tar_make()

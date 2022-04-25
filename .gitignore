@@ -2,4 +2,9 @@
 .Rhistory
 .RData
 .Ruserdata
-*/out/*
+
+# Allow the placeholder `.empty` files so that the
+# directory can exist in the repo on GitLab
+!*/out/.empty
+!*/_targets/*
+

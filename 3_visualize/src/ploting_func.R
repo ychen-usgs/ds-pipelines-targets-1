@@ -3,6 +3,8 @@ library(dplyr)
 
 plot_func <- function (data,out_file_path) {
   
+  dir.create(file.path(out_file_path), showWarnings = FALSE)
+  
   png(file = out_file_path, width = 8, height = 10, res = 200, units = 'in')
   par(omi = c(0,0,0.05,0.05), mai = c(1,1,0,0), las = 1, mgp = c(2,.5,0), cex = 1.5)
   
@@ -43,6 +45,6 @@ plot_func <- function (data,out_file_path) {
   points(2.2, 1.09, col = '#1b9e77', pch = 21, bg = 'white', lwd = 2.5, cex = 1.5)
   text(2.3, 1.1, 'Process-Based', pos = 4, cex = 1.1)
   
-  return(out_file_path)
   dev.off()
+  return(out_file_path)
 }
