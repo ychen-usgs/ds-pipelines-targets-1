@@ -41,4 +41,4 @@ list(
   )
 )
 
-targets::tar_make()
+# run targets::tar_make() in command line
