@@ -2,4 +2,13 @@
 .Rhistory
 .RData
 .Ruserdata
+
+# pipeline files/dirs that shouldn't be committed
 */out/*
+_targets/*
+
+# Allow the placeholder `.empty` files so that the
+# directory can exist in the repo on GitLab
+# This way do not need dir.create() for functions
+!*/out/.empty
+

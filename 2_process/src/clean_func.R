@@ -3,10 +3,10 @@ library(dplyr)
 library(readr)
 library(stringr)
 
-clean_func <- function (file) {
+clean_func <- function (in_filepath) {
   
   # Prepare the data for plotting
-  eval_data <- readr::read_csv(file, col_types = 'iccd') %>%
+  eval_data <- readr::read_csv(in_filepath, col_types = 'iccd') %>%
     filter(str_detect(exper_id, 'similar_[0-9]+')) %>%
     mutate(col = case_when(
       model_type == 'pb' ~ '#1b9e77',
